@@ -52,10 +52,10 @@ export function RequirementsInput({
         )}
 
         {/* Manual Form Controls */}
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-8">
+          <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
-              <Label htmlFor="width" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Width (px)</Label>
+              <Label htmlFor="width" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Width (px)</Label>
               <Input
                 id="width"
                 type="number"
@@ -65,7 +65,7 @@ export function RequirementsInput({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="height" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Height (px)</Label>
+              <Label htmlFor="height" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Height (px)</Label>
               <Input
                 id="height"
                 type="number"
@@ -76,10 +76,10 @@ export function RequirementsInput({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="dpi" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">DPI</Label>
+                <Label htmlFor="dpi" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">DPI</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
@@ -103,7 +103,7 @@ export function RequirementsInput({
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="format" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Format</Label>
+                <Label htmlFor="format" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Format</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
@@ -126,10 +126,10 @@ export function RequirementsInput({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-5">
             <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="fit" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Resizing Mode</Label>
+                <Label htmlFor="fit" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Resizing Mode</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
@@ -151,7 +151,7 @@ export function RequirementsInput({
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="maxSize" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Max File Size (KB)</Label>
+              <Label htmlFor="maxSize" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Max File Size (KB)</Label>
               <Input
                 id="maxSize"
                 type="number"
@@ -164,10 +164,10 @@ export function RequirementsInput({
           </div>
         </div>
 
-      <div className="space-y-3 border-t border-border pt-6">
+      <div className="space-y-4 border-t border-border pt-8">
         <div className="flex items-center justify-between px-1">
-          <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/40">Industry Presets</Label>
-          <span className="text-[10px] font-bold text-muted-foreground/30">{PRESETS.length} available</span>
+          <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-primary/60">Quick Select Presets</Label>
+          <span className="text-[10px] font-bold text-muted-foreground/40">{PRESETS.length} templates</span>
         </div>
         <Accordion type="multiple" className="w-full">
           {Array.from(new Set(PRESETS.map((p) => p.category))).map((category) => {
@@ -175,10 +175,10 @@ export function RequirementsInput({
             const hasActive = items.some((p) => p.id === selectedPresetId)
             return (
               <AccordionItem key={category} value={category} className="border-border">
-                <AccordionTrigger className="py-4 hover:no-underline">
+                <AccordionTrigger className="py-5 hover:no-underline">
                   <div className="flex min-w-0 flex-1 items-center justify-between gap-2 pr-2">
-                    <span className="truncate font-display text-base font-bold text-foreground">{category}</span>
-                    <span className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/30">
+                    <span className="truncate font-display text-base font-bold tracking-tight text-foreground">{category}</span>
+                    <span className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/40">
                       {hasActive && (
                         <span className="inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(16,185,129,0.5)]" aria-hidden="true" />
                       )}

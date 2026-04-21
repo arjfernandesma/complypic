@@ -24,75 +24,82 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
   }
 
   return (
-    <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <PreviewPanel 
-          label="Initial Source" 
+          label="Initial Image" 
           url={originalUrl} 
           empty="Upload an image" 
         />
         <PreviewPanel 
-          label="Compliance Output" 
+          label="Compliant Output" 
           url={result?.dataUrl ?? null} 
           empty="Process to preview" 
           highlighted 
           aspectRatio={requirements.width / requirements.height}
         />
       </div>
+
       {result && (
-        <>
-          <div className="flex gap-3">
+        <div className="space-y-8">
+          <div className="flex flex-col gap-4">
+            <ComplianceBanner compliant={result.compliant} issues={result.issues} />
+            
             <Button 
               onClick={download} 
               size="lg" 
-              className="w-full bg-emerald-600 font-black uppercase tracking-widest text-white shadow-[0_10px_20px_rgba(5,150,105,0.3)] transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.99] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+              className="h-14 w-full bg-emerald-600 font-bold uppercase tracking-widest text-white shadow-xl transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
             >
-              <Download className="mr-2 size-5" aria-hidden="true" />
-              Download compliant image
+              <Download className="mr-3 size-5" aria-hidden="true" />
+              Download Compliant File
             </Button>
           </div>
 
-          <ComplianceBanner compliant={result.compliant} issues={result.issues} />
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <Stat
-              icon={Ruler}
-              label="Dimensions"
-              value={`${result.width}×${result.height}`}
-              ok={result.width === requirements.width && result.height === requirements.height}
-            />
-            <Stat
-              icon={Gauge}
-              label="DPI"
-              value={`${result.dpi}`}
-              ok={Math.abs(result.dpi - requirements.dpi) <= 1}
-            />
-            <Stat icon={FileImage} label="Format" value={result.format.toUpperCase()} ok={result.format === requirements.format} />
-            <Stat
-              icon={HardDrive}
-              label="File size"
-              value={`${result.fileSizeKb} KB`}
-              ok={!requirements.maxFileSizeKb || result.fileSizeKb <= requirements.maxFileSizeKb}
-            />
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 px-1">
+              <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/50">Technical Specifications</span>
+              <div className="h-px flex-1 bg-border/50" />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              <Stat
+                icon={Ruler}
+                label="Dimensions"
+                value={`${result.width}×${result.height}`}
+                ok={result.width === requirements.width && result.height === requirements.height}
+              />
+              <Stat
+                icon={Gauge}
+                label="Target DPI"
+                value={`${result.dpi}`}
+                ok={Math.abs(result.dpi - requirements.dpi) <= 1}
+              />
+              <Stat icon={FileImage} label="File Format" value={result.format.toUpperCase()} ok={result.format === requirements.format} />
+              <Stat
+                icon={HardDrive}
+                label="Output Size"
+                value={`${result.fileSizeKb} KB`}
+                ok={!requirements.maxFileSizeKb || result.fileSizeKb <= requirements.maxFileSizeKb}
+              />
+            </div>
           </div>
 
           {result.appliedTransformations.length > 0 && (
-            <div className="rounded-xl border border-border bg-muted/20 p-5">
-              <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">
-                Applied Transformations
+            <div className="rounded-2xl border border-border bg-muted/10 p-6">
+              <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
+                Applied Optimizations
               </h3>
-              <ul className="space-y-1">
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {result.appliedTransformations.map((t, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-foreground">
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-primary" aria-hidden="true" />
+                  <li key={i} className="flex items-center gap-3 text-sm text-foreground/80">
+                    <div className="size-1 rounded-full bg-emerald-500" />
                     <span>{t}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
-
-        </>
+        </div>
       )}
     </div>
   )
@@ -114,7 +121,7 @@ function PreviewPanel({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">{label}</span>
+        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/50">{label}</span>
       </div>
       <div
         className={cn(
@@ -137,9 +144,9 @@ function PreviewPanel({
             className="size-full object-contain animate-in fade-in zoom-in-95 duration-500" 
           />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-muted-foreground/40">
-            <ImageIcon className="size-8" />
-            <span className="text-[11px] font-medium uppercase tracking-wider">{empty}</span>
+          <div className="flex flex-col items-center gap-3 text-muted-foreground/30">
+            <ImageIcon className="size-10 stroke-[1.5]" />
+            <span className="text-xs font-semibold uppercase tracking-widest">{empty}</span>
           </div>
         )}
         {highlighted && !url && (
@@ -191,12 +198,12 @@ function Stat({
   ok: boolean
 }) {
   return (
-    <div className="rounded-xl border border-border bg-card p-4 transition-all hover:border-border/80">
+    <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:bg-muted/5">
       <div className="flex items-center justify-between">
-        <Icon className="size-4 text-muted-foreground/40" aria-hidden={true} />
+        <Icon className="size-5 text-muted-foreground/30 transition-colors group-hover:text-primary/60" aria-hidden={true} />
         <span
           className={cn(
-            "inline-flex size-5 items-center justify-center rounded-full text-[10px] font-bold",
+            "inline-flex size-6 items-center justify-center rounded-full text-xs font-black",
             ok ? "bg-emerald-500/10 text-emerald-600" : "bg-destructive/10 text-destructive",
           )}
           aria-label={ok ? "Compliant" : "Non-compliant"}
@@ -204,8 +211,8 @@ function Stat({
           {ok ? "✓" : "!"}
         </span>
       </div>
-      <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/60">{label}</p>
-      <p className="font-display text-base font-black tracking-tight text-foreground">{value}</p>
+      <p className="mt-5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/40">{label}</p>
+      <p className="font-display text-lg font-black tracking-tight text-foreground">{value}</p>
     </div>
   )
 }
