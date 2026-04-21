@@ -253,7 +253,7 @@ export function ImageComplianceTool() {
                   onPresetSelect={setSelectedPresetId}
                 />
                 <Button
-                  onClick={onProcess}
+                  onClick={() => onProcess()}
                   disabled={!canProcess}
                   size="xl"
                   className="group w-full text-base font-bold shadow-[0_15px_30px_rgba(6,182,212,0.3)] transition-all hover:scale-[1.02] active:scale-[0.98]"
