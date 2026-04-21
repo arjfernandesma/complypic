@@ -52,10 +52,10 @@ export function RequirementsInput({
         )}
 
         {/* Manual Form Controls */}
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="width">Width (px)</Label>
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="width" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Width (px)</Label>
               <Input
                 id="width"
                 type="number"
@@ -64,8 +64,8 @@ export function RequirementsInput({
                 className="h-10 transition-all focus:ring-primary/20"
               />
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="height">Height (px)</Label>
+            <div className="space-y-2">
+              <Label htmlFor="height" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Height (px)</Label>
               <Input
                 id="height"
                 type="number"
@@ -76,13 +76,13 @@ export function RequirementsInput({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="dpi">DPI</Label>
+                <Label htmlFor="dpi" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">DPI</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="size-3.5 text-muted-foreground/50 transition-colors hover:text-muted-foreground" />
+                    <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
                     Dots Per Inch. Higher values (300+) are required for high-quality printing. 72 is standard for web.
@@ -101,12 +101,12 @@ export function RequirementsInput({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="format">Format</Label>
+                <Label htmlFor="format" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Format</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="size-3.5 text-muted-foreground/50 transition-colors hover:text-muted-foreground" />
+                    <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
                     JPEG is best for photos; PNG/WebP provide better quality but larger files.
@@ -126,17 +126,17 @@ export function RequirementsInput({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="fit">Resizing Mode</Label>
+                <Label htmlFor="fit" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Resizing Mode</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <HelpCircle className="size-3.5 text-muted-foreground/50 transition-colors hover:text-muted-foreground" />
+                    <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <b>Cover</b>: Fills the entire area (may crop edges).<br/>
-                    <b>Contain</b>: Shows specific full image (adds padding).
+                    <b className="font-bold">Cover</b>: Fills the entire area (may crop edges).<br/>
+                    <b className="font-bold">Contain</b>: Shows specific full image (adds padding).
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -150,8 +150,8 @@ export function RequirementsInput({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="maxSize">Max File Size (KB)</Label>
+            <div className="space-y-2">
+              <Label htmlFor="maxSize" className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">Max File Size (KB)</Label>
               <Input
                 id="maxSize"
                 type="number"
@@ -164,10 +164,10 @@ export function RequirementsInput({
           </div>
         </div>
 
-      <div className="space-y-2 border-t border-border pt-4">
-        <div className="flex items-center justify-between">
-          <Label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Presets</Label>
-          <span className="text-[11px] text-muted-foreground">{PRESETS.length} templates</span>
+      <div className="space-y-3 border-t border-border pt-6">
+        <div className="flex items-center justify-between px-1">
+          <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/40">Industry Presets</Label>
+          <span className="text-[10px] font-bold text-muted-foreground/30">{PRESETS.length} available</span>
         </div>
         <Accordion type="multiple" className="w-full">
           {Array.from(new Set(PRESETS.map((p) => p.category))).map((category) => {
@@ -175,18 +175,18 @@ export function RequirementsInput({
             const hasActive = items.some((p) => p.id === selectedPresetId)
             return (
               <AccordionItem key={category} value={category} className="border-border">
-                <AccordionTrigger className="py-3 hover:no-underline">
+                <AccordionTrigger className="py-4 hover:no-underline">
                   <div className="flex min-w-0 flex-1 items-center justify-between gap-2 pr-2">
-                    <span className="truncate text-sm font-medium text-foreground">{category}</span>
-                    <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="truncate font-display text-base font-bold text-foreground">{category}</span>
+                    <span className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/30">
                       {hasActive && (
-                        <span className="inline-flex size-1.5 rounded-full bg-primary" aria-hidden="true" />
+                        <span className="inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(16,185,129,0.5)]" aria-hidden="true" />
                       )}
-                      {items.length}
+                      {items.length} options
                     </span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pt-0 pb-2">
+                <AccordionContent className="pt-1 pb-4">
                   <ul className="flex flex-col gap-1.5">
                     {items.map((p) => {
                       const active = p.id === selectedPresetId

@@ -27,12 +27,12 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <PreviewPanel 
-          label="Before" 
+          label="Initial Source" 
           url={originalUrl} 
           empty="Upload an image" 
         />
         <PreviewPanel 
-          label="After" 
+          label="Compliance Output" 
           url={result?.dataUrl ?? null} 
           empty="Process to preview" 
           highlighted 
@@ -76,10 +76,9 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
             />
           </div>
 
-          {result.appliedTransformations.length > 0 && (
-            <div className="rounded-lg border border-border bg-muted/30 p-4">
-              <h3 className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                Applied transformations
+            <div className="rounded-xl border border-border bg-muted/20 p-5">
+              <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">
+                Applied Transformations
               </h3>
               <ul className="space-y-1">
                 {result.appliedTransformations.map((t, i) => (
@@ -112,9 +111,9 @@ function PreviewPanel({
   aspectRatio?: number
 }) {
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</span>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between px-1">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">{label}</span>
       </div>
       <div
         className={cn(
@@ -125,8 +124,8 @@ function PreviewPanel({
         style={aspectRatio ? { aspectRatio: String(aspectRatio) } : undefined}
       >
         {highlighted && url && (
-          <div className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-full bg-primary/90 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-primary-foreground shadow-lg backdrop-blur-md animate-in slide-in-from-top-1">
-            <CheckCircle2 className="size-2.5" /> Final Build
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-emerald-500/90 px-3 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-white shadow-xl backdrop-blur-md animate-in slide-in-from-top-2">
+            <CheckCircle2 className="size-3" /> Final Build
           </div>
         )}
         {url ? (
@@ -191,21 +190,21 @@ function Stat({
   ok: boolean
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-3">
+    <div className="rounded-xl border border-border bg-card p-4 transition-all hover:border-border/80">
       <div className="flex items-center justify-between">
-        <Icon className="size-3.5 text-muted-foreground" aria-hidden={true} />
+        <Icon className="size-4 text-muted-foreground/40" aria-hidden={true} />
         <span
           className={cn(
-            "inline-flex size-4 items-center justify-center rounded-full",
-            ok ? "bg-primary/15 text-primary" : "bg-destructive/15 text-destructive",
+            "inline-flex size-5 items-center justify-center rounded-full text-[10px] font-bold",
+            ok ? "bg-emerald-500/10 text-emerald-600" : "bg-destructive/10 text-destructive",
           )}
           aria-label={ok ? "Compliant" : "Non-compliant"}
         >
           {ok ? "✓" : "!"}
         </span>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm font-medium text-foreground">{value}</p>
+      <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/60">{label}</p>
+      <p className="font-display text-base font-black tracking-tight text-foreground">{value}</p>
     </div>
   )
 }

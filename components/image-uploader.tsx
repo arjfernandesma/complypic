@@ -78,12 +78,12 @@ export function ImageUploader({ file, previewUrl, onChange }: ImageUploaderProps
           )}
           aria-label="Upload image by clicking or drag and drop"
         >
-          <div className="flex size-12 items-center justify-center rounded-full bg-background">
-            <Upload className="size-5 text-muted-foreground" aria-hidden="true" />
+          <div className="flex size-14 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-black/5">
+            <Upload className="size-6 text-primary" aria-hidden="true" />
           </div>
           <div className="space-y-1">
-            <p className="text-sm font-medium text-foreground">Drop an image here, or click to browse</p>
-            <p className="text-xs text-muted-foreground">JPEG, PNG or WebP · up to {MAX_SIZE_MB}MB</p>
+            <p className="font-display text-base font-bold tracking-tight text-foreground">Drop image here, or click to browse</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/40">JPEG, PNG or WebP · MAX {MAX_SIZE_MB}MB</p>
           </div>
         </button>
       ) : (
@@ -96,9 +96,9 @@ export function ImageUploader({ file, previewUrl, onChange }: ImageUploaderProps
             <div className="flex min-w-0 flex-1 flex-col gap-2">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-foreground">{file.name}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {(file.size / 1024).toFixed(0)} KB · {file.type || "image"}
+                  <p className="truncate font-display text-sm font-bold text-foreground">{file.name}</p>
+                  <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground/40">
+                    {(file.size / 1024).toFixed(0)} KB · {file.type?.split("/")[1] || "IMAGE"}
                   </p>
                 </div>
                 <Button

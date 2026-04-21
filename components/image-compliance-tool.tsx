@@ -159,7 +159,7 @@ export function ImageComplianceTool() {
             </div>
             <span
               className={cn(
-                "absolute -bottom-6 whitespace-nowrap text-[9px] font-black uppercase tracking-[0.15em] transition-colors",
+                "absolute -bottom-6 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.2em] transition-colors",
                 currentStep === step.id ? "text-primary" : "text-muted-foreground/40"
               )}
             >
@@ -170,21 +170,21 @@ export function ImageComplianceTool() {
       </div>
 
       {/* Step Navigation - Fixed Header */}
-      <div className="mb-4 flex w-full max-w-2xl items-center justify-between px-2">
+      <div className="mb-8 flex w-full max-w-2xl items-center justify-between px-2">
         <Button
           variant="ghost"
           size="sm"
           onClick={prevStep}
           disabled={currentStep === 1 || processing}
           className={cn(
-            "h-9 px-3 text-muted-foreground transition-all hover:bg-white/5 hover:text-primary",
+            "h-10 px-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/60 transition-all hover:bg-white/5 hover:text-primary",
             currentStep === 1 && "opacity-0 pointer-events-none"
           )}
         >
-          <ChevronLeft className="mr-1 size-4" /> Back
+          <ChevronLeft className="mr-1 size-4 transition-transform group-hover:-translate-x-1" /> Back
         </Button>
 
-        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/30">
+        <div className="font-display text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground/20">
           Step {currentStep} of 4
         </div>
 
@@ -194,11 +194,11 @@ export function ImageComplianceTool() {
           onClick={nextStep}
           disabled={currentStep === 4 || (currentStep === 1 && !file) || processing}
           className={cn(
-            "h-9 px-3 text-muted-foreground transition-all hover:bg-white/5 hover:text-primary",
+            "h-10 px-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/60 transition-all hover:bg-white/5 hover:text-primary",
             currentStep === 4 && "opacity-0 pointer-events-none"
           )}
         >
-          Next <ChevronRight className="ml-1 size-4" />
+          Next <ChevronRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
         </Button>
       </div>
 
@@ -222,14 +222,14 @@ export function ImageComplianceTool() {
         {/* Step 1: Upload */}
         {currentStep === 1 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-black tracking-tight text-zinc-950">Step 1: Upload</CardTitle>
-                <CardDescription className="text-zinc-500">Drag and drop your image to begin the compliance check</CardDescription>
+            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+              <CardHeader className="space-y-1 py-8 text-center">
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 1: Upload</CardTitle>
+                <CardDescription className="text-sm font-medium text-zinc-400">Drag and drop your image to begin compliance check</CardDescription>
               </CardHeader>
-              <CardContent className="px-8 py-8 pb-12">
+              <CardContent className="px-10 pb-12">
                 <ImageUploader file={file} previewUrl={previewUrl} onChange={setFile} />
-                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] uppercase tracking-tighter text-zinc-400">
+                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-300">
                     Industry standard presets available in Step 2
                 </div>
               </CardContent>
@@ -240,12 +240,12 @@ export function ImageComplianceTool() {
         {/* Step 2: Configure */}
         {currentStep === 2 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader>
-                <CardTitle className="text-2xl font-black tracking-tight text-zinc-950">Step 2: Setup</CardTitle>
-                <CardDescription className="text-zinc-500">Enter the dimensions and DPI required for your image</CardDescription>
+            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+              <CardHeader className="space-y-1 py-8 text-center">
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 2: Setup</CardTitle>
+                <CardDescription className="text-sm font-medium text-zinc-400">Define dimensions and technical requirements</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-8 px-8 py-6 pb-12">
+              <CardContent className="space-y-8 px-10 pb-12">
                 <RequirementsInput 
                   value={requirements} 
                   onChange={setRequirements} 
@@ -278,12 +278,12 @@ export function ImageComplianceTool() {
         {/* Step 3: Fine-tune */}
         {currentStep === 3 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader>
-                <CardTitle className="text-2xl font-black tracking-tight text-zinc-950">Step 3: Fine-tune</CardTitle>
-                <CardDescription className="text-zinc-500">Adjust the focal point and framing manually</CardDescription>
+            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+              <CardHeader className="space-y-1 py-8 text-center">
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 3: Fine-tune</CardTitle>
+                <CardDescription className="text-sm font-medium text-zinc-400">Adjust the focal point and framing manually</CardDescription>
               </CardHeader>
-              <CardContent className="px-8 py-6 pb-12">
+              <CardContent className="px-10 pb-12">
                 <CropEditor
                   imageSrc={previewUrl!}
                   aspect={aspect}
@@ -318,15 +318,15 @@ export function ImageComplianceTool() {
         {/* Step 4: Result */}
         {currentStep === 4 && (
           <div className="animate-in zoom-in-95 fade-in duration-500">
-            <Card className="border-none bg-white shadow-[0_20px_50px_rgba(0,0,0,0.4)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-green-500/10 text-green-600 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
-                   <div className="text-xl font-bold">✓</div>
+            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+              <CardHeader className="space-y-1 py-8 text-center">
+                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                   <div className="text-2xl font-bold">✓</div>
                 </div>
-                <CardTitle className="text-2xl font-black tracking-tight text-zinc-950">Step 4: Result</CardTitle>
-                <CardDescription className="text-zinc-500">Success! Your image meets all technical requirements.</CardDescription>
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 4: Result</CardTitle>
+                <CardDescription className="text-sm font-medium text-emerald-600/60">Compliance check passed successfully</CardDescription>
               </CardHeader>
-              <CardContent className="px-8 py-6 pb-12">
+              <CardContent className="px-10 pb-12">
                 <Button 
                   size="lg" 
                   variant="secondary"
