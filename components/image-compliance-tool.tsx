@@ -71,7 +71,7 @@ export function ImageComplianceTool() {
       if (requirements.removeBackground) {
         setProcessingMessage("✨ AI: Detailing subject and removing background...")
         try {
-          const removeBackground = (await import("@imgly/background-removal")).default
+          const { removeBackground } = await import("@imgly/background-removal")
           const blob = await removeBackground(currentFile, {
             progress: (key, current, total) => {
                 if (key.includes('model')) {
