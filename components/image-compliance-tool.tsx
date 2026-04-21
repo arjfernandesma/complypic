@@ -71,8 +71,15 @@ export function ImageComplianceTool() {
       if (requirements.removeBackground) {
         setProcessingMessage("✨ AI: Detailing subject and removing background...")
         try {
-          const { removeBackground } = await import("@imgly/background-removal")
+          const imgly = await import("@imgly/background-removal")
+          const removeBackground = imgly.removeBackground || (imgly as any).default
+          console.log("✨ AI Library loaded:", { hasFunction: typeof removeBackground === 'function' })
+          
+          if (typeof removeBackground !== 'function') {
+            throw new Error("AI Library failed to load correctly. Please refresh the page.")
+          }
           const blob = await removeBackground(currentFile, {
+            publicPath: "https://static.img.ly/background-removal-data/1.7.0/",
             progress: (key, current, total) => {
                 if (key.includes('model')) {
                     setProcessingMessage(`✨ AI: Loading model (${Math.round((current / total) * 100)}%)...`)
