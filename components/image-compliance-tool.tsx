@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus, Download } from "lucide-react"
+import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus, Download, Sparkles, Eraser, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
 import { ImageUploader } from "@/components/image-uploader"
 import { RequirementsInput } from "@/components/requirements-input"
 import { ResultPreview } from "@/components/result-preview"
@@ -27,6 +28,9 @@ export function ImageComplianceTool() {
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null)
+  const [removingBg, setRemovingBg] = useState(false)
+  const [bgRemovalProgress, setBgRemovalProgress] = useState(0)
+  const [originalFile, setOriginalFile] = useState<File | null>(null)
   const toolRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -58,6 +62,40 @@ export function ImageComplianceTool() {
   useEffect(() => {
     setCropRegion(null)
   }, [requirements.width, requirements.height])
+
+  const onRemoveBackground = async () => {
+    if (!file) return
+    if (!originalFile) setOriginalFile(file)
+    
+    setRemovingBg(true)
+    setBgRemovalProgress(0)
+    
+    try {
+      // Dynamic import to avoid SSR issues with WASM
+      const { removeBackground } = await import("@imgly/background-removal")
+      
+      const blob = await removeBackground(file, {
+        progress: (key, current, total) => {
+          setBgRemovalProgress((current / total) * 100)
+        },
+        publicPath: "https://static.img.ly/packages/@imgly/background-removal/1.7.0/assets/",
+      })
+      
+      const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + "-no-bg.png", { type: "image/png" })
+      setFile(newFile)
+    } catch (err) {
+      setError("Failed to remove background. Please try again.")
+    } finally {
+      setRemovingBg(false)
+    }
+  }
+
+  const onRestoreOriginal = () => {
+    if (originalFile) {
+      setFile(originalFile)
+      setOriginalFile(null)
+    }
+  }
 
   const onProcess = async (targetStep?: number) => {
     if (!file) return
@@ -313,6 +351,67 @@ export function ImageComplianceTool() {
                 <CardDescription className="text-sm font-medium text-muted-foreground">Adjust the focal point and framing manually</CardDescription>
               </CardHeader>
               <CardContent className="px-10 pb-8">
+                {/* AI Magic Actions */}
+                <div className="mb-6 flex items-center justify-between gap-4 rounded-2xl bg-secondary/30 p-4 ring-1 ring-border/5 backdrop-blur-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-[0_0_15px_var(--color-primary)]/10">
+                      <Sparkles className="size-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-widest text-foreground">AI Enhancements</p>
+                      <p className="text-[10px] font-medium text-muted-foreground/60 uppercase">Professional Background Removal</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    {originalFile && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onRestoreOriginal}
+                        disabled={removingBg}
+                        className="h-9 px-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                        title="Restore Original"
+                      >
+                        <RotateCcw className="mr-1.5 size-3" /> Restore
+                      </Button>
+                    )}
+                    <Button
+                      size="sm"
+                      variant={originalFile ? "secondary" : "default"}
+                      onClick={onRemoveBackground}
+                      disabled={removingBg}
+                      className="h-9 px-4 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/5 transition-all hover:scale-[1.02]"
+                    >
+                      {removingBg ? (
+                        <>
+                          <Loader2 className="mr-2 size-3 animate-spin" />
+                          {Math.round(bgRemovalProgress)}%
+                        </>
+                      ) : originalFile ? (
+                        <>
+                          <Eraser className="mr-1.5 size-3" /> Re-process
+                        </>
+                      ) : (
+                        <>
+                          <Eraser className="mr-1.5 size-3" /> Remove BG
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+
+                {removingBg && (
+                  <div className="mb-6 space-y-2">
+                    <Progress value={bgRemovalProgress} className="h-1 bg-primary/10">
+                      <div className="h-full bg-primary shadow-[0_0_10px_var(--color-primary)] transition-all duration-300" />
+                    </Progress>
+                    <p className="text-center text-[9px] font-bold uppercase tracking-[0.2em] text-primary/60">
+                      Processing WASM Neural Network…
+                    </p>
+                  </div>
+                )}
+
                 <CropEditor
                   imageSrc={previewUrl!}
                   aspect={aspect}
