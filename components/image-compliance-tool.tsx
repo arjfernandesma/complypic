@@ -78,7 +78,6 @@ export function ImageComplianceTool() {
         progress: (key, current, total) => {
           setBgRemovalProgress((current / total) * 100)
         },
-        publicPath: "https://static.img.ly/packages/@imgly/background-removal/1.7.0/assets/",
       })
       
       const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + "-no-bg.png", { type: "image/png" })

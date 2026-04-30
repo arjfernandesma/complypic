@@ -25,8 +25,8 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data:",
     "font-src 'self' data:",
-    // static.img.ly hosts the @imgly/background-removal WASM assets
-    "connect-src 'self' https://vitals.vercel-insights.com https://static.img.ly",
+    // staticimgly.com hosts the @imgly/background-removal WASM and model assets
+    "connect-src 'self' https://vitals.vercel-insights.com https://staticimgly.com",
     // Web Workers (used by @imgly/background-removal) are created as blob: URLs
     "worker-src 'self' blob:",
   ].join('; ')
