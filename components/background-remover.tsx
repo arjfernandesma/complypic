@@ -40,7 +40,7 @@ export function BackgroundRemover() {
       
       setProgress(30)
       const blob = await removeBackground(file, {
-        publicPath: "/bg-assets/",
+        publicPath: `${window.location.origin}/bg-assets/`,
         progress: (key, current, total) => {
           const p = Math.round((current / total) * 100)
           setProgress(30 + (p * 0.6))

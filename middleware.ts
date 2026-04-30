@@ -38,7 +38,7 @@ export function middleware(request: NextRequest) {
     'X-Frame-Options': 'DENY',
     'X-DNS-Prefetch-Control': 'on',
     'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-    'Permissions-Policy': 'microphone=(), geolocation=(), interest-cohort=()',
+    'Permissions-Policy': 'microphone=(), geolocation=()',
   }
 
   Object.entries(securityHeaders).forEach(([key, value]) => {
