@@ -42,10 +42,8 @@ export function BackgroundRemover() {
       const blob = await removeBackground(file, {
         progress: (key, current, total) => {
           const p = Math.round((current / total) * 100)
-          // Scale progress to 30-90% range during actual removal
           setProgress(30 + (p * 0.6))
         },
-        publicPath: "https://static.img.ly/packages/@imgly/background-removal/1.7.0/assets/", // Using CDN for assets to simplify Next.js integration
       })
 
       setProgress(100)
