@@ -84,6 +84,7 @@ export function ImageComplianceTool() {
       const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + "-no-bg.png", { type: "image/png" })
       setFile(newFile)
     } catch (err) {
+      console.error("[background-removal]", err)
       setError("Failed to remove background. Please try again.")
     } finally {
       setRemovingBg(false)
@@ -182,32 +183,33 @@ export function ImageComplianceTool() {
   const prevStep = () => goToStep(currentStep - 1)
 
   return (
-    <div ref={toolRef} className="relative mx-auto flex max-w-6xl flex-col items-center px-6 md:px-12">
+    <div ref={toolRef} className="relative mx-auto flex max-w-6xl flex-col items-center px-3 sm:px-6 md:px-12">
       {/* Side Navigation Buttons (Desktop) */}
 
       {/* Header Navigation & Progress */}
       <div className={cn(
-        "mb-12 flex w-full items-center justify-between transition-all duration-500 ease-in-out",
+        "mb-10 sm:mb-12 flex w-full items-center justify-between transition-all duration-500 ease-in-out",
         currentStep === 1 ? "max-w-2xl" : "max-w-5xl"
       )}>
         {/* Back Button */}
-        <div className="w-32">
+        <div className="shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={prevStep}
             disabled={currentStep === 1 || processing}
             className={cn(
-              "group h-10 border-border bg-card/50 px-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground shadow-sm transition-all hover:bg-secondary hover:text-primary dark:border-border dark:bg-card/50",
+              "group h-10 border-border bg-card/50 px-3 sm:px-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground shadow-sm transition-all hover:bg-secondary hover:text-primary dark:border-border dark:bg-card/50",
               currentStep === 1 && "opacity-0 pointer-events-none"
             )}
           >
-            <ChevronLeft className="mr-1.5 size-3.5 transition-transform group-hover:-translate-x-1" /> Back
+            <ChevronLeft className="size-3.5 transition-transform group-hover:-translate-x-1 sm:mr-1.5" />
+            <span className="hidden sm:inline">Back</span>
           </Button>
         </div>
 
         {/* Progress Indicator */}
-        <div className="relative flex flex-1 max-w-md items-center justify-between px-2 mx-8">
+        <div className="relative flex flex-1 max-w-md items-center justify-between px-2 mx-1 sm:mx-8">
           {/* Connection Line (Inactive) */}
           <div className="absolute left-8 right-8 h-px bg-muted-foreground/10" />
           
@@ -252,29 +254,30 @@ export function ImageComplianceTool() {
         </div>
 
         {/* Next Button */}
-        <div className="w-32 flex justify-end">
+        <div className="shrink-0">
           <Button
             onClick={nextStep}
             disabled={currentStep === 4 || (currentStep === 1 && !file) || processing}
             className={cn(
-              "group h-10 bg-primary px-5 text-[10px] font-black uppercase tracking-widest text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]",
+              "group h-10 bg-primary px-3 sm:px-5 text-[10px] font-black uppercase tracking-widest text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]",
               currentStep === 4 && "opacity-0 pointer-events-none"
             )}
           >
-            Next <ChevronRight className="ml-1.5 size-3.5 transition-transform group-hover:translate-x-1" />
+            <span className="hidden sm:inline">Next</span>
+            <ChevronRight className="size-3.5 transition-transform group-hover:translate-x-1 sm:ml-1.5" />
           </Button>
         </div>
       </div>
 
       {/* Active Card Area */}
       <div className={cn(
-        "relative min-h-[580px] w-full transition-all duration-500 ease-in-out",
+        "relative w-full transition-all duration-500 ease-in-out",
         currentStep === 1 ? "max-w-2xl" : "max-w-5xl"
       )}>
         {/* Processing Overlay */}
         {processing && (
           <div className="absolute inset-0 z-50 flex items-center justify-center rounded-xl bg-background/40 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-10 shadow-2xl ring-1 ring-white/10">
+            <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-6 sm:p-10 shadow-2xl ring-1 ring-white/10">
               <div className="relative">
                 <Loader2 className="size-12 animate-spin text-primary" />
                 <div className="absolute inset-0 size-12 animate-ping rounded-full border-2 border-primary/20" />
@@ -294,9 +297,9 @@ export function ImageComplianceTool() {
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 1: Upload</CardTitle>
                 <CardDescription className="text-sm font-medium text-muted-foreground">Drag and drop your image to begin compliance check</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-8">
+              <CardContent className="px-4 sm:px-10 pb-6 sm:pb-8">
                 <ImageUploader file={file} previewUrl={previewUrl} onChange={setFile} />
-                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+                <div className="mt-6 sm:mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
                     Industry standard presets available in Step 2
                 </div>
               </CardContent>
@@ -312,8 +315,8 @@ export function ImageComplianceTool() {
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 2: Setup</CardTitle>
                 <CardDescription className="text-sm font-medium text-muted-foreground">Define dimensions and technical requirements</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-8 px-10 pb-8">
-                <RequirementsInput 
+              <CardContent className="space-y-6 sm:space-y-8 px-4 sm:px-10 pb-6 sm:pb-8">
+                <RequirementsInput
                   value={requirements} 
                   onChange={setRequirements} 
                   selectedPresetId={selectedPresetId}
@@ -350,11 +353,11 @@ export function ImageComplianceTool() {
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 3: Fine-tune</CardTitle>
                 <CardDescription className="text-sm font-medium text-muted-foreground">Adjust the focal point and framing manually</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-8">
+              <CardContent className="px-4 sm:px-10 pb-6 sm:pb-8">
                 {/* AI Magic Actions */}
-                <div className="mb-6 flex items-center justify-between gap-4 rounded-2xl bg-secondary/30 p-4 ring-1 ring-border/5 backdrop-blur-sm">
+                <div className="mb-6 flex flex-col gap-4 rounded-2xl bg-secondary/30 p-4 ring-1 ring-border/5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-[0_0_15px_var(--color-primary)]/10">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary shadow-[0_0_15px_var(--color-primary)]/10">
                       <Sparkles className="size-5" />
                     </div>
                     <div>
@@ -362,8 +365,8 @@ export function ImageComplianceTool() {
                       <p className="text-[10px] font-medium text-muted-foreground/60 uppercase">Professional Background Removal</p>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-2">
+
+                  <div className="flex items-center gap-2 self-end sm:self-auto">
                     {originalFile && (
                       <Button
                         variant="ghost"
@@ -457,7 +460,7 @@ export function ImageComplianceTool() {
                 </div>
                 <CardDescription className="text-sm font-medium text-primary/60">Compliance check passed successfully</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-8">
+              <CardContent className="px-4 sm:px-10 pb-6 sm:pb-8">
                 <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Button 
                     size="lg" 

@@ -18,14 +18,27 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
   // 2. Security Headers
+  const csp = [
+    "default-src 'self'",
+    // blob: required for WASM worker bootstrap; wasm-unsafe-eval for WASM compilation
+    "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' blob: https://va.vercel-scripts.com",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' blob: data:",
+    "font-src 'self' data:",
+    // static.img.ly hosts the @imgly/background-removal WASM assets
+    "connect-src 'self' https://vitals.vercel-insights.com https://static.img.ly",
+    // Web Workers (used by @imgly/background-removal) are created as blob: URLs
+    "worker-src 'self' blob:",
+  ].join('; ')
+
   const securityHeaders = {
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self' data:; connect-src 'self' https://vitals.vercel-insights.com;",
+    'Content-Security-Policy': csp,
     'Referrer-Policy': 'origin-when-cross-origin',
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'X-DNS-Prefetch-Control': 'on',
     'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+    'Permissions-Policy': 'microphone=(), geolocation=(), interest-cohort=()',
   }
 
   Object.entries(securityHeaders).forEach(([key, value]) => {

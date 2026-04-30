@@ -105,10 +105,24 @@
   }
 
   /* Ensure hand cursor on all interactive elements */
-  button, 
+  button,
   label,
   [role="button"],
   .cursor-pointer {
     cursor: pointer !important;
+  }
+
+  /* Prevent double-tap zoom delay on touch devices */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Remove iOS input styling */
+  input,
+  select,
+  textarea {
+    -webkit-appearance: none;
   }
 }

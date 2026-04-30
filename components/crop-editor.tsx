@@ -66,7 +66,7 @@ export function CropEditor({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative h-[400px] w-full overflow-hidden rounded-xl bg-black/20 shadow-inner ring-1 ring-white/10">
+      <div className="relative h-[260px] sm:h-[400px] w-full overflow-hidden rounded-xl bg-black/20 shadow-inner ring-1 ring-white/10">
         <Cropper
           image={imageSrc}
           crop={crop}

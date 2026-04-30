@@ -38,7 +38,7 @@ export default function Page() {
               </div>
 
               {mounted && (
-                <nav className="hidden md:block">
+                <nav>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary outline-none group">
@@ -70,7 +70,7 @@ export default function Page() {
           </div>
         </header>
 
-        <section className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-6xl px-4 pt-6 sm:pt-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
               <ImageIcon className="size-3" aria-hidden="true" />
@@ -89,7 +89,7 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-6xl px-4 py-6 sm:py-12 sm:px-6 lg:px-8">
           <ImageComplianceTool />
         </section>
 
