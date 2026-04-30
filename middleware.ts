@@ -25,8 +25,8 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data:",
     "font-src 'self' data:",
-    // bg-assets/* rewrites proxy CDN assets server-side, so no external origin needed
-    "connect-src 'self' https://vitals.vercel-insights.com",
+    // blob: required for ONNX runtime workers that fetch WASM via blob: URLs
+    "connect-src 'self' blob: https://vitals.vercel-insights.com",
     // Web Workers (used by @imgly/background-removal) are created as blob: URLs
     "worker-src 'self' blob:",
   ].join('; ')
