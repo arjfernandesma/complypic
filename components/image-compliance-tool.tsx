@@ -75,6 +75,7 @@ export function ImageComplianceTool() {
       const { removeBackground } = await import("@imgly/background-removal")
       
       const blob = await removeBackground(file, {
+        publicPath: "/bg-assets/",
         progress: (key, current, total) => {
           setBgRemovalProgress((current / total) * 100)
         },
