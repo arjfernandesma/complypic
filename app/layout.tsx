@@ -20,9 +20,27 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'ComplyPic — Professional Image Compliance Tool',
+  metadataBase: new URL('https://complypic.com'),
+  title: {
+    template: '%s | ComplyPic',
+    default: 'ComplyPic — Professional Image Compliance Tool',
+  },
   description:
     'Effortlessly transform images to meet strict technical specifications. Resize, adjust DPI, and enforce format or file size requirements for professional documents and passports.',
+  openGraph: {
+    type: 'website',
+    siteName: 'ComplyPic',
+    title: 'ComplyPic — Professional Image Compliance Tool',
+    description:
+      'Effortlessly transform images to meet strict technical specifications. Resize, adjust DPI, and enforce format or file size requirements for professional documents and passports.',
+    url: 'https://complypic.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ComplyPic — Professional Image Compliance Tool',
+    description:
+      'Effortlessly transform images to meet strict technical specifications. Resize, adjust DPI, and enforce format or file size requirements for professional documents and passports.',
+  },
   icons: {
     icon: [
       {

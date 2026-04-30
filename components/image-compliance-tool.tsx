@@ -14,20 +14,24 @@ import {
   type CropRegion,
   DEFAULT_REQUIREMENTS,
   type ProcessingResult,
+  PRESETS,
 } from "@/lib/compliance-types"
 import { cn } from "@/lib/utils"
 
-export function ImageComplianceTool() {
+export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: string } = {}) {
+  const initialPreset = initialPresetId ? (PRESETS.find((p) => p.id === initialPresetId) ?? null) : null
   const [currentStep, setCurrentStep] = useState(1)
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const [requirements, setRequirements] = useState<ComplianceRequirements>(DEFAULT_REQUIREMENTS)
+  const [requirements, setRequirements] = useState<ComplianceRequirements>(
+    initialPreset?.requirements ?? DEFAULT_REQUIREMENTS
+  )
   const [cropRegion, setCropRegion] = useState<CropRegion | null>(null)
   const [processing, setProcessing] = useState(false)
   const [processingMessage, setProcessingMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)
-  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null)
+  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(initialPresetId ?? null)
   const [removingBg, setRemovingBg] = useState(false)
   const [bgRemovalProgress, setBgRemovalProgress] = useState(0)
   const [originalFile, setOriginalFile] = useState<File | null>(null)
