@@ -12,15 +12,18 @@ const nextConfig = {
     'drizzle-orm',
     'postgres',
     '@auth/drizzle-adapter',
-    'next-auth',
     'stripe',
     'resend',
     'nanoid',
+    'archiver',
+    '@upstash/redis',
+    '@upstash/ratelimit',
+    'sharp',
   ],
   turbopack: {
-    root: 'C:\\Projetos\\complypic',
+    root: 'C:\\projetos\\complypic\\.claude\\worktrees\\agent-a24cea8aa4cb2c4ab',
     resolveAlias: {
-      'next': 'C:\\Projetos\\complypic\\node_modules\\next',
+      'next': 'C:\\projetos\\complypic\\.claude\\worktrees\\agent-a24cea8aa4cb2c4ab\\node_modules\\next',
     },
   },
   images: {

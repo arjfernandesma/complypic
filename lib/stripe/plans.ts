@@ -3,6 +3,8 @@ export type PlanId = 'free' | 'pro' | 'business' | 'founding_pro'
 export interface PlanLimits {
   imageCredits: number
   batchSize: number
+  batchMaxImages: number
+  batchRetentionHours: number
   aiParsePerMonth: number
   seats: number
   apiAccess: boolean
@@ -12,6 +14,8 @@ export const PLAN_LIMITS: Record<PlanId, PlanLimits> = {
   free: {
     imageCredits: 0,
     batchSize: 0,
+    batchMaxImages: 0,
+    batchRetentionHours: 0,
     aiParsePerMonth: 0,
     seats: 1,
     apiAccess: false,
@@ -19,6 +23,8 @@ export const PLAN_LIMITS: Record<PlanId, PlanLimits> = {
   pro: {
     imageCredits: 300,
     batchSize: 50,
+    batchMaxImages: 50,
+    batchRetentionHours: 1,
     aiParsePerMonth: 100,
     seats: 1,
     apiAccess: false,
@@ -26,6 +32,8 @@ export const PLAN_LIMITS: Record<PlanId, PlanLimits> = {
   founding_pro: {
     imageCredits: 300,
     batchSize: 50,
+    batchMaxImages: 50,
+    batchRetentionHours: 1,
     aiParsePerMonth: 100,
     seats: 1,
     apiAccess: false,
@@ -33,6 +41,8 @@ export const PLAN_LIMITS: Record<PlanId, PlanLimits> = {
   business: {
     imageCredits: 2000,
     batchSize: 500,
+    batchMaxImages: 500,
+    batchRetentionHours: 24,
     aiParsePerMonth: 500,
     seats: 5,
     apiAccess: true,

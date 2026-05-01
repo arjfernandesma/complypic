@@ -8,8 +8,8 @@ import {
   jsonb,
   primaryKey,
   uniqueIndex,
-  sql,
 } from 'drizzle-orm/pg-core'
+import { sql } from 'drizzle-orm'
 
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
@@ -77,7 +77,7 @@ export const subscriptions = pgTable(
 )
 
 export const subscriptionsUserActiveIdx = uniqueIndex('subscriptions_user_active_idx')
-  .on(subscriptions.userId)
+  .on(sql`user_id`)
   .where(sql`status IN ('active','trialing','past_due')`)
 
 export const creditLedger = pgTable('credit_ledger', {
