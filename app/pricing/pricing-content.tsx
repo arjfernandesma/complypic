@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { ShieldCheckIcon } from 'lucide-react'
 import { PricingCard } from './components/pricing-card'
 import { CreditPacks } from './components/credit-packs'
@@ -67,9 +66,6 @@ export function PricingContent({ foundingCount, foundingCap, prices }: PricingCo
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="space-y-12">
           <div className="space-y-4 text-center">
-            <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="ComplyPic" className="mx-auto h-10 w-auto" />
-            </Link>
             <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
               Simple, transparent pricing
             </h1>

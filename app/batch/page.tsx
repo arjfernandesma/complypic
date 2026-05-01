@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { AppBackground } from "@/components/app-background"
+import { SiteHeader } from "@/components/site-header"
 import { BatchWorkflow } from "./components/batch-workflow"
 import type { Plan } from "@/lib/stripe/plans"
 
@@ -16,9 +17,10 @@ export default async function BatchPage() {
   const creditsRemaining = 300
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
+    <>
       <AppBackground />
-      <main className="relative z-10 flex flex-col items-center pb-20 pt-16 sm:pt-24">
+      <SiteHeader />
+      <main className="relative z-10 flex min-h-screen flex-col items-center pb-20 pt-12 sm:pt-16">
         <div className="mb-12 text-center">
           <h1 className="font-display text-4xl font-black tracking-tight text-foreground sm:text-5xl">
             Bulk Processing
@@ -29,6 +31,6 @@ export default async function BatchPage() {
         </div>
         <BatchWorkflow plan={plan} creditsRemaining={creditsRemaining} />
       </main>
-    </div>
+    </>
   )
 }

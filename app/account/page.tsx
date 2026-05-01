@@ -1,9 +1,8 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowLeftIcon } from 'lucide-react'
 import { requireUser } from '@/lib/auth-helpers'
 import { getActiveSubscription } from '@/lib/db/queries'
 import { PLAN_LIMITS, type PlanId } from '@/lib/stripe/plans'
+import { SiteHeader } from '@/components/site-header'
 import { PlanSection } from './components/plan-section'
 import { BillingSection } from './components/billing-section'
 import {
@@ -29,21 +28,11 @@ export default async function AccountPage() {
 
   return (
     <div className="min-h-dvh bg-background">
-      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-        <div className="mb-8 space-y-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeftIcon className="size-4" />
-            Back to app
-          </Link>
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="font-display text-2xl font-bold">Account</h1>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-            </div>
-          </div>
+      <SiteHeader />
+      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+        <div className="mb-8">
+          <h1 className="font-display text-2xl font-bold">Account</h1>
+          <p className="text-sm text-muted-foreground">{user.email}</p>
         </div>
 
         <div className="space-y-6">
