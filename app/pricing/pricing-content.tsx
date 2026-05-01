@@ -148,9 +148,9 @@ export function PricingContent({ foundingCount, foundingCap, prices }: PricingCo
 
           <CreditPacks
             packs={[
-              { name: 'Starter', credits: 50, price: 4.99, priceId: prices.packStarter },
-              { name: 'Standard', credits: 200, price: 14.99, priceId: prices.packStandard },
-              { name: 'Pro Pack', credits: 600, price: 39.99, priceId: prices.packPro },
+              { name: 'Top-Up 50', credits: 50, price: 4.99, priceId: prices.packStarter },
+              { name: 'Top-Up 200', credits: 200, price: 14.99, priceId: prices.packStandard },
+              { name: 'Top-Up 600', credits: 600, price: 39.99, priceId: prices.packPro },
             ]}
           />
 

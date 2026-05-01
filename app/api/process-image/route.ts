@@ -1,11 +1,21 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type { ImageFormat, FitMode } from "@/lib/compliance-types"
 import { processImage } from "@/lib/image/process"
+import { processImageLimit, getRealIp, hashIp } from "@/lib/rate-limit"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
 
 export async function POST(req: NextRequest) {
+  const ip = getRealIp(req)
+  const { success } = await processImageLimit.limit(hashIp(ip))
+  if (!success) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    )
+  }
+
   try {
     const formData = await req.formData()
     const file = formData.get("file") as File | null

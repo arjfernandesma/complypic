@@ -11,6 +11,12 @@ export const aiParseFreeLimit = new Ratelimit({
   prefix: 'ratelimit:ai-parse:free',
 })
 
+export const processImageLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(20, '3600 s'),
+  prefix: 'ratelimit:process-image:ip',
+})
+
 export async function decrementAiParse(userId: string): Promise<boolean> {
   const rows = await db
     .update(subscriptions)
