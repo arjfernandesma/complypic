@@ -26,7 +26,7 @@ export function middleware(request: NextRequest) {
     "img-src 'self' blob: data:",
     "font-src 'self' data:",
     // blob: required for ONNX runtime workers that fetch WASM via blob: URLs
-    "connect-src 'self' blob: https://vitals.vercel-insights.com",
+    "connect-src 'self' blob: https://vitals.vercel-insights.com https://api.stripe.com",
     // Web Workers (used by @imgly/background-removal) are created as blob: URLs
     "worker-src 'self' blob:",
   ].join('; ')

@@ -1,7 +1,27 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
+  },
+  serverExternalPackages: [
+    'drizzle-orm',
+    'postgres',
+    '@auth/drizzle-adapter',
+    'next-auth',
+    'stripe',
+    'resend',
+    'nanoid',
+  ],
+  turbopack: {
+    root: 'C:\\Projetos\\complypic',
+    resolveAlias: {
+      'next': 'C:\\Projetos\\complypic\\node_modules\\next',
+    },
   },
   images: {
     unoptimized: true,

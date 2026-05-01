@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { generateObject } from "ai"
 import { z } from "zod"
+import { getOptionalUser } from "@/lib/auth-helpers"
+import { getActiveSubscription } from "@/lib/db/queries"
+import { aiParseFreeLimit, decrementAiParse, getRealIp, hashIp } from "@/lib/rate-limit"
 
 export const runtime = "nodejs"
 export const maxDuration = 30
@@ -14,8 +17,47 @@ const schema = z.object({
   maxFileSizeKb: z.number().int().positive().optional().describe("Maximum file size in kilobytes, if specified"),
 })
 
+const PAID_PLANS = new Set(['pro', 'founding_pro', 'business'])
+
 export async function POST(req: NextRequest) {
   try {
+    const user = await getOptionalUser()
+
+    if (user?.id) {
+      const sub = await getActiveSubscription(user.id)
+      const plan = sub?.plan ?? 'free'
+
+      if (PAID_PLANS.has(plan)) {
+        const allowed = await decrementAiParse(user.id)
+        if (!allowed) {
+          return NextResponse.json(
+            { error: 'AI parse quota exhausted for this billing period', upgradeUrl: '/pricing' },
+            { status: 429 },
+          )
+        }
+      } else {
+        const ip = getRealIp(req)
+        const key = hashIp(ip)
+        const { success } = await aiParseFreeLimit.limit(key)
+        if (!success) {
+          return NextResponse.json(
+            { error: 'Rate limit exceeded. Upgrade to Pro for more AI parses.', upgradeUrl: '/pricing' },
+            { status: 429 },
+          )
+        }
+      }
+    } else {
+      const ip = getRealIp(req)
+      const key = hashIp(ip)
+      const { success } = await aiParseFreeLimit.limit(key)
+      if (!success) {
+        return NextResponse.json(
+          { error: 'Rate limit exceeded. Sign in and upgrade to Pro for more AI parses.', upgradeUrl: '/pricing' },
+          { status: 429 },
+        )
+      }
+    }
+
     const { prompt } = (await req.json()) as { prompt?: string }
 
     if (!prompt || prompt.trim().length === 0) {
