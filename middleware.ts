@@ -20,15 +20,18 @@ export function middleware(request: NextRequest) {
   // 2. Security Headers
   const csp = [
     "default-src 'self'",
-    // blob: required for WASM worker bootstrap; wasm-unsafe-eval for WASM compilation
-    "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' blob: https://va.vercel-scripts.com",
+    // blob: required for WASM worker bootstrap; wasm-unsafe-eval for WASM compilation; Google AdSense scripts
+    "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' blob: https://va.vercel-scripts.com https://pagead2.googlesyndication.com https://partner.googleadservices.com https://tpc.googlesyndication.com https://www.googletagservices.com",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' blob: data:",
+    // Google ads serve images from these domains
+    "img-src 'self' blob: data: https://*.googlesyndication.com https://*.google.com https://*.googleadservices.com https://*.doubleclick.net",
     "font-src 'self' data:",
     // blob: required for ONNX runtime workers that fetch WASM via blob: URLs
-    "connect-src 'self' blob: https://vitals.vercel-insights.com https://api.stripe.com",
+    "connect-src 'self' blob: https://vitals.vercel-insights.com https://api.stripe.com https://pagead2.googlesyndication.com https://adservice.google.com",
     // Web Workers (used by @imgly/background-removal) are created as blob: URLs
     "worker-src 'self' blob:",
+    // AdSense renders ads in iframes from these origins
+    "frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com",
   ].join('; ')
 
   const securityHeaders = {
