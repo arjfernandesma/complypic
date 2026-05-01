@@ -117,3 +117,18 @@ export const processingHistory = pgTable('processing_history', {
   compliant: boolean('compliant'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 })
+
+export const blogPosts = pgTable('blog_posts', {
+  id: text('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  excerpt: text('excerpt'),
+  content: text('content').notNull().default(''),
+  coverImageUrl: text('cover_image_url'),
+  tag: text('tag'),
+  published: boolean('published').notNull().default(false),
+  publishedAt: timestamp('published_at'),
+  authorId: text('author_id').references(() => users.id, { onDelete: 'set null' }),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})

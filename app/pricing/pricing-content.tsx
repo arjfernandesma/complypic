@@ -80,11 +80,11 @@ export function PricingContent({ foundingCount, foundingCap, prices }: PricingCo
                 role="switch"
                 aria-checked={isAnnual}
                 onClick={() => setIsAnnual(!isAnnual)}
-                className="relative inline-flex h-6 w-11 cursor-pointer rounded-full border-2 border-transparent bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[checked=true]:bg-primary"
+                className="relative inline-flex h-7 w-12 cursor-pointer rounded-full border-2 border-transparent bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[checked=true]:bg-primary"
                 data-checked={isAnnual}
               >
                 <span
-                  className={`pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform ${isAnnual ? 'translate-x-5' : 'translate-x-0'}`}
+                  className={`pointer-events-none block size-5 rounded-full bg-background shadow-lg ring-0 transition-transform ${isAnnual ? 'translate-x-6' : 'translate-x-0'}`}
                 />
               </button>
               <span className={isAnnual ? 'text-sm font-medium' : 'text-muted-foreground text-sm'}>

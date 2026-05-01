@@ -9,6 +9,7 @@ import {
   Eraser,
   Layers,
   CreditCard,
+  BookOpen,
   User,
   LogOut,
   Menu,
@@ -28,6 +29,7 @@ import { cn } from "@/lib/utils"
 const NAV = [
   { href: "/", label: "Compliance Tool", icon: ScanLine, exact: true },
   { href: "/batch", label: "Bulk Processing", icon: Layers, badge: "Pro" },
+  { href: "/blog", label: "Blog", icon: BookOpen, exact: false },
   { href: "/pricing", label: "Pricing", icon: CreditCard, exact: false },
 ] as const
 
@@ -196,12 +198,12 @@ export function SiteHeader() {
           <SheetTrigger asChild>
             <button
               aria-label="Open menu"
-              className="flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
+              className="flex size-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground md:hidden"
             >
               <Menu className="size-5" />
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="flex w-72 flex-col gap-0 p-0">
+          <SheetContent side="right" className="flex w-[min(80vw,18rem)] flex-col gap-0 p-0">
             {/* Sheet logo */}
             <div className="flex items-center gap-2.5 border-b border-border px-4 py-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}

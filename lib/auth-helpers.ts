@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { redirect, notFound } from 'next/navigation'
 import { auth } from '@/lib/auth'
 
 export async function getOptionalUser() {
@@ -10,6 +10,19 @@ export async function requireUser() {
   const user = await getOptionalUser()
   if (!user) {
     redirect('/signin')
+  }
+  return user
+}
+
+export function isAdmin(email?: string | null): boolean {
+  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase()
+  return !!adminEmail && !!email && email.toLowerCase() === adminEmail
+}
+
+export async function requireAdmin() {
+  const user = await requireUser()
+  if (!isAdmin(user.email)) {
+    notFound()
   }
   return user
 }

@@ -88,7 +88,7 @@ export function BatchProgress({ batchId, onComplete }: BatchProgressProps) {
       </div>
 
       {data && data.results.length > 0 && (
-        <div className="overflow-y-auto max-h-96 rounded-xl border border-border divide-y divide-border">
+        <div className="overflow-y-auto max-h-64 rounded-xl border border-border divide-y divide-border sm:max-h-96">
           {data.results.map((img) => (
             <ImageRow key={img.filename} img={img} />
           ))}

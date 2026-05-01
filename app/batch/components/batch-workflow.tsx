@@ -129,7 +129,7 @@ export function BatchWorkflow({ plan, creditsRemaining }: BatchWorkflowProps) {
               </div>
               <span
                 className={cn(
-                  "absolute -bottom-6 whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.2em] transition-colors",
+                  "absolute -bottom-6 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.2em] transition-colors",
                   step === s.id ? "text-primary" : "text-muted-foreground/40"
                 )}
               >
@@ -145,7 +145,7 @@ export function BatchWorkflow({ plan, creditsRemaining }: BatchWorkflowProps) {
       <div className="w-full mt-4">
         <Card className="border-border bg-card shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-border/5">
           <CardHeader className="space-y-1 py-6 text-center">
-            <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">
+            <CardTitle className="font-display text-2xl font-black tracking-tight text-foreground sm:text-3xl">
               {currentMeta.title}
             </CardTitle>
             <CardDescription className="text-sm font-medium text-muted-foreground">

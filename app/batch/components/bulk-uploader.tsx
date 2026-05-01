@@ -174,7 +174,7 @@ export function BulkUploader({ files, onFilesChange, plan, onNext }: BulkUploade
         onDrop={onDrop}
         onClick={() => !atCapacity && inputRef.current?.click()}
         className={cn(
-          "flex min-h-48 cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed transition-all",
+          "flex min-h-40 cursor-pointer flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed transition-all sm:min-h-48",
           dragging
             ? "border-primary bg-primary/5 scale-[1.01]"
             : "border-border bg-secondary/20 hover:border-primary/50 hover:bg-secondary/40",
