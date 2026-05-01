@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { StarIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 
 interface FoundingBannerProps {
   count: number
@@ -22,7 +21,6 @@ export function FoundingBanner({
 }: FoundingBannerProps) {
   const [loading, setLoading] = useState(false)
   const remaining = Math.max(0, cap - count)
-  const pct = Math.min(100, (count / cap) * 100)
   const priceId = isAnnual ? yearlyPriceId : monthlyPriceId
   const price = isAnnual ? '$59/year' : '$7/month'
 
@@ -70,13 +68,6 @@ export function FoundingBanner({
         >
           {loading ? 'Redirecting…' : 'Claim founding rate'}
         </Button>
-      </div>
-      <div className="mt-4 space-y-1">
-        <div className="flex justify-between text-xs text-muted-foreground">
-          <span>{count} claimed</span>
-          <span>{remaining} spots left</span>
-        </div>
-        <Progress value={pct} className="h-1.5" />
       </div>
     </div>
   )

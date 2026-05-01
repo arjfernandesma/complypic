@@ -24,7 +24,7 @@ export default async function SignInPage({
             Sign in to ComplyPic
           </h1>
           <p className="text-sm text-muted-foreground">
-            Enter your email to receive a magic link.
+            Use your Google account or email and password.
           </p>
         </div>
         <SignInForm callbackUrl={callbackUrl} />
