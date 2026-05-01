@@ -1,8 +1,3 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -20,12 +15,6 @@ const nextConfig = {
     '@upstash/ratelimit',
     'sharp',
   ],
-  turbopack: {
-    root: 'C:\\projetos\\complypic\\.claude\\worktrees\\agent-a24cea8aa4cb2c4ab',
-    resolveAlias: {
-      'next': 'C:\\projetos\\complypic\\.claude\\worktrees\\agent-a24cea8aa4cb2c4ab\\node_modules\\next',
-    },
-  },
   images: {
     unoptimized: true,
   },

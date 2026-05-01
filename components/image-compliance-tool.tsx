@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus, Download, Sparkles, Eraser, RotateCcw } from "lucide-react"
+import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus, Download, Sparkles, Eraser, RotateCcw, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -9,6 +9,7 @@ import { ImageUploader } from "@/components/image-uploader"
 import { RequirementsInput } from "@/components/requirements-input"
 import { ResultPreview } from "@/components/result-preview"
 import { CropEditor } from "@/components/crop-editor"
+import { UpgradeModal } from "@/components/upgrade-modal"
 import {
   type ComplianceRequirements,
   type CropRegion,
@@ -35,6 +36,8 @@ export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: str
   const [removingBg, setRemovingBg] = useState(false)
   const [bgRemovalProgress, setBgRemovalProgress] = useState(0)
   const [originalFile, setOriginalFile] = useState<File | null>(null)
+  const [hasProcessedOnce, setHasProcessedOnce] = useState(false)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const toolRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -130,8 +133,8 @@ export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: str
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Processing failed")
       setResult(data as ProcessingResult)
-      
-      // Navigate to the target step or the default next step
+      setHasProcessedOnce(true)
+
       if (targetStep) {
         setCurrentStep(targetStep)
       } else {
@@ -186,8 +189,30 @@ export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: str
   const nextStep = () => goToStep(currentStep + 1)
   const prevStep = () => goToStep(currentStep - 1)
 
+  const handleUploadNew = () => {
+    if (hasProcessedOnce) {
+      setShowUpgradeModal(true)
+      return
+    }
+    resetForNewImage()
+  }
+
+  const resetForNewImage = () => {
+    setFile(null)
+    setResult(null)
+    setCropRegion(null)
+    setSelectedPresetId(null)
+    setCurrentStep(1)
+  }
+
   return (
     <div ref={toolRef} className="relative mx-auto flex max-w-6xl flex-col items-center px-3 sm:px-6 md:px-12">
+      <UpgradeModal
+        open={showUpgradeModal}
+        onOpenChange={setShowUpgradeModal}
+        trigger="second-image"
+        onContinueSingle={resetForNewImage}
+      />
       {/* Side Navigation Buttons (Desktop) */}
 
       {/* Header Navigation & Progress */}
@@ -474,17 +499,11 @@ export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: str
                     <Download className="mr-2 size-4" /> Download Image
                   </Button>
 
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     variant="outline"
                     className="h-12 border-border font-bold uppercase tracking-widest text-muted-foreground transition-all hover:bg-secondary hover:text-primary"
-                    onClick={() => {
-                      setFile(null);
-                      setResult(null);
-                      setCropRegion(null);
-                      setSelectedPresetId(null);
-                      setCurrentStep(1);
-                    }}
+                    onClick={handleUploadNew}
                   >
                     <Plus className="mr-2 size-4" /> Upload New
                   </Button>
@@ -509,6 +528,24 @@ export function ImageComplianceTool({ initialPresetId }: { initialPresetId?: str
                 </div>
 
                 <ResultPreview originalUrl={previewUrl} result={result} requirements={requirements} />
+
+                <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                      <Zap className="size-5 text-primary" />
+                    </div>
+                    <p className="text-sm font-bold text-foreground">
+                      Need to process a batch?{" "}
+                      <span className="font-normal text-muted-foreground">Pro handles 50 images at once.</span>
+                    </p>
+                  </div>
+                  <a
+                    href="/batch"
+                    className="shrink-0 text-[11px] font-black uppercase tracking-widest text-primary transition-colors hover:text-primary/80"
+                  >
+                    Try Bulk →
+                  </a>
+                </div>
               </CardContent>
             </Card>
           </div>

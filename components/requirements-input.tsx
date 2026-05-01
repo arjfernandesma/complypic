@@ -9,9 +9,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { HelpCircle } from "lucide-react"
+import { HelpCircle, Loader2, Wand2 } from "lucide-react"
 import { type ComplianceRequirements, type ImageFormat, type FitMode, PRESETS } from "@/lib/compliance-types"
 import { cn } from "@/lib/utils"
+import { UpgradeModal } from "@/components/upgrade-modal"
 
 interface RequirementsInputProps {
   value: ComplianceRequirements
@@ -20,13 +21,48 @@ interface RequirementsInputProps {
   onPresetSelect: (id: string | null) => void
 }
 
-export function RequirementsInput({ 
-  value, 
-  onChange, 
-  selectedPresetId, 
-  onPresetSelect 
+export function RequirementsInput({
+  value,
+  onChange,
+  selectedPresetId,
+  onPresetSelect
 }: RequirementsInputProps) {
   const [parsedMessage, setParsedMessage] = useState<string | null>(null)
+  const [aiPrompt, setAiPrompt] = useState("")
+  const [aiParsing, setAiParsing] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+
+  const parseWithAi = async () => {
+    if (!aiPrompt.trim()) return
+    setAiParsing(true)
+    setAiError(null)
+    try {
+      const res = await fetch("/api/parse-prompt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: aiPrompt }),
+      })
+      if (res.status === 429) {
+        setShowUpgradeModal(true)
+        return
+      }
+      if (!res.ok) {
+        const body = await res.json()
+        setAiError(body.error || "AI parse failed")
+        return
+      }
+      const parsed = await res.json()
+      onPresetSelect(null)
+      onChange({ ...value, ...parsed })
+      setParsedMessage("Requirements extracted from your description")
+      setAiPrompt("")
+    } catch {
+      setAiError("Failed to connect to AI service")
+    } finally {
+      setAiParsing(false)
+    }
+  }
 
   const update = <K extends keyof ComplianceRequirements>(key: K, v: ComplianceRequirements[K]) => {
     onPresetSelect(null)
@@ -45,6 +81,40 @@ export function RequirementsInput({
   return (
     <TooltipProvider>
       <div className="space-y-6">
+        <UpgradeModal
+          open={showUpgradeModal}
+          onOpenChange={setShowUpgradeModal}
+          trigger="ai-parse"
+        />
+
+        <div className="rounded-2xl border border-border bg-secondary/20 p-4">
+          <Label className="mb-2 block text-xs font-black uppercase tracking-widest text-primary/60">
+            Describe with AI
+          </Label>
+          <div className="flex gap-2">
+            <Input
+              value={aiPrompt}
+              onChange={(e) => setAiPrompt(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" && !aiParsing) parseWithAi() }}
+              placeholder='e.g. "US passport photo, 2×2 inches at 300 DPI, JPEG under 240KB"'
+              className="h-10 flex-1 text-sm"
+              disabled={aiParsing}
+            />
+            <Button
+              type="button"
+              size="sm"
+              onClick={parseWithAi}
+              disabled={!aiPrompt.trim() || aiParsing}
+              className="h-10 shrink-0 bg-primary px-4 font-black uppercase tracking-widest text-primary-foreground hover:bg-primary/90"
+            >
+              {aiParsing ? <Loader2 className="size-4 animate-spin" /> : <Wand2 className="size-4" />}
+            </Button>
+          </div>
+          {aiError && (
+            <p className="mt-2 text-xs font-bold text-destructive">{aiError}</p>
+          )}
+        </div>
+
         {parsedMessage && (
           <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-center text-xs font-bold uppercase tracking-widest text-primary animate-in fade-in slide-in-from-top-1">
             {parsedMessage}
