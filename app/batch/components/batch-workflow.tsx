@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 import { ChevronLeft } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import type { Plan } from "@/lib/stripe/plans"
+import type { PlanId } from "@/lib/stripe/plans"
 import type { ComplianceRequirements } from "@/lib/compliance-types"
 import type { FileWithPreview } from "./bulk-uploader"
 import type { BatchStatusResponse } from "@/app/api/batch/[batchId]/status/route"
@@ -13,6 +13,7 @@ import { BatchConfig } from "./batch-config"
 import { BatchReview } from "./batch-review"
 import { BatchProgress } from "./batch-progress"
 import { BatchDownload } from "./batch-download"
+import { UpgradeModal } from "@/components/upgrade-modal"
 
 type WorkflowStep = "upload" | "configure" | "review" | "processing" | "download"
 
@@ -27,7 +28,7 @@ const STEPS: { id: WorkflowStep; label: string; title: string; description: stri
 const STEP_ORDER: WorkflowStep[] = ["upload", "configure", "review", "processing", "download"]
 
 interface BatchWorkflowProps {
-  plan: Plan
+  plan: PlanId
   creditsRemaining: number
 }
 
@@ -39,6 +40,9 @@ export function BatchWorkflow({ plan, creditsRemaining }: BatchWorkflowProps) {
   const [batchId, setBatchId] = useState<string | null>(null)
   const [creditsReserved, setCreditsReserved] = useState(0)
   const [lastStatusData, setLastStatusData] = useState<BatchStatusResponse | null>(null)
+  const [showUpgradeGate, setShowUpgradeGate] = useState(false)
+
+  const canUseBulk = plan === "pro" || plan === "founding_pro" || plan === "business"
 
   const currentIdx = STEP_ORDER.indexOf(step)
   const currentMeta = STEPS[currentIdx]
@@ -155,7 +159,13 @@ export function BatchWorkflow({ plan, creditsRemaining }: BatchWorkflowProps) {
                   files={files}
                   onFilesChange={handleFilesChange}
                   plan={plan}
-                  onNext={() => goTo("configure")}
+                  onNext={() => {
+                    if (!canUseBulk) {
+                      setShowUpgradeGate(true)
+                    } else {
+                      goTo("configure")
+                    }
+                  }}
                 />
               </div>
             )}
@@ -212,6 +222,12 @@ export function BatchWorkflow({ plan, creditsRemaining }: BatchWorkflowProps) {
           </CardContent>
         </Card>
       </div>
+
+      <UpgradeModal
+        open={showUpgradeGate}
+        onOpenChange={setShowUpgradeGate}
+        trigger="batch-gate"
+      />
     </div>
   )
 }

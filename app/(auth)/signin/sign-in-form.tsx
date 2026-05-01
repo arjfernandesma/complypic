@@ -6,7 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export function SignInForm() {
+interface SignInFormProps {
+  callbackUrl: string
+}
+
+export function SignInForm({ callbackUrl }: SignInFormProps) {
   const [email, setEmail] = useState('')
   const [pending, setPending] = useState(false)
   const [error, setError] = useState('')
@@ -20,7 +24,7 @@ export function SignInForm() {
       const result = await signIn('resend', {
         email,
         redirect: false,
-        callbackUrl: '/account',
+        callbackUrl,
       })
       if (result?.error) {
         setError('Failed to send magic link. Please try again.')

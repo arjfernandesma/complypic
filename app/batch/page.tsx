@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
+import { redirect } from "next/navigation"
+import { auth } from "@/lib/auth"
+import { getActiveSubscription } from "@/lib/db/queries"
 import { AppBackground } from "@/components/app-background"
 import { SiteHeader } from "@/components/site-header"
 import { BatchWorkflow } from "./components/batch-workflow"
-import type { Plan } from "@/lib/stripe/plans"
+import type { PlanId } from "@/lib/stripe/plans"
 
 export const dynamic = "force-dynamic"
 
@@ -13,8 +16,15 @@ export const metadata: Metadata = {
 }
 
 export default async function BatchPage() {
-  const plan: Plan = "pro"
-  const creditsRemaining = 300
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    redirect("/signin?callbackUrl=/batch")
+  }
+
+  const sub = await getActiveSubscription(session.user.id)
+  const plan = (sub?.plan ?? "free") as PlanId
+  const creditsRemaining = sub?.imageCreditsRemaining ?? 0
 
   return (
     <>

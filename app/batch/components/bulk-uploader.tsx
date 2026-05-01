@@ -5,7 +5,7 @@ import { Upload, X, AlertCircle, Loader2, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import type { Plan } from "@/lib/stripe/plans"
+import type { PlanId } from "@/lib/stripe/plans"
 import { PLAN_LIMITS } from "@/lib/stripe/plans"
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024
@@ -21,7 +21,7 @@ export interface FileWithPreview {
 interface BulkUploaderProps {
   files: FileWithPreview[]
   onFilesChange: (files: FileWithPreview[]) => void
-  plan: Plan
+  plan: PlanId
   onNext: () => void
 }
 

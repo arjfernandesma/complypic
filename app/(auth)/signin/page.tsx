@@ -6,7 +6,13 @@ export const metadata: Metadata = {
   title: 'Sign In',
 }
 
-export default function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>
+}) {
+  const { callbackUrl = '/account' } = await searchParams
+
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-6">
@@ -21,7 +27,7 @@ export default function SignInPage() {
             Enter your email to receive a magic link.
           </p>
         </div>
-        <SignInForm />
+        <SignInForm callbackUrl={callbackUrl} />
         <p className="text-center text-xs text-muted-foreground">
           By signing in you agree to our{' '}
           <Link href="/terms" className="underline underline-offset-4 hover:text-foreground">
